@@ -4,6 +4,8 @@
 
 **netsuite-upload** is a Visual Studio Code extension that allows you to manage your SuiteScript files directly from the IDE & helps you with defining of new momdules & module dependecies.
 
+v2.0 This VS code plugin has been updated to add functionality for any NetSuite folder (i.e. not just the SuiteScript folder) as well as authentication key functionality. The latter is important due to NetSuite's encouragement of two-factor authentication (2FA) and the traditional connection method will not work if 2FA is forced for all accounts.
+
 ## Features
 ### 1. NetSuite File Cabinet Management
 Right-click the file/folder in the navigation panel to see the options:
