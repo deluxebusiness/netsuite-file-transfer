@@ -2,7 +2,7 @@
 
 [![Version](http://vsmarketplacebadge.apphb.com/version/tomastvrdy.netsuite-upload.svg)](https://marketplace.visualstudio.com/items?itemName=tomastvrdy.netsuite-upload)
 
-**netsuite-upload** is a Visual Studio Code extension that allows you to manage your SuiteScript files directly from the IDE & helps you with defining of new momdules & module dependecies.
+**netsuite-upload** is a Visual Studio Code extension that allows you to manage your SuiteScript files directly from the IDE & helps you with defining of new momdules & module dependecies
 
 v2.0 This VS code plugin has been updated to add functionality for any NetSuite folder (i.e. not just the SuiteScript folder) as well as authentication key functionality. The latter is important due to NetSuite's encouragement of two-factor authentication (2FA) and the traditional connection method will not work if 2FA is forced for all accounts
 
@@ -37,17 +37,38 @@ Right-click the file/folder in the navigation panel to see the options:
 - If not yet created, create one or update the project `settings.json` inside the `.vscode` folder
 - Copy the following code to `settings.json` and update with your settings
 
+##### OAuth Authentication
+- If you wish to use OAuth authentication instead of basic authentication you can leave the authentication header blank and use the OAuth settings properties
+- First generate an Integration record in NetSuite, make sure the 'token based authentication' scheme is checked, and save the token and secret
+- Second log into a role you wish to use for authentication and from the manage tokens center generate a new token and secret using the Integration from the previous step
+- Input the 4 values from above in the corresponding settings options along with the account number in the realm property
+
 **settings.json**
 ```javascript
 {
 	// Authentication header
-  	"netSuiteUpload.authentication": "NLAuth nlauth_account=<ACCOUNTID>, nlauth_email=<LOGIN>, nlauth_signature=<PASSWORD>, nlauth_role=<ROLE>",
+	"netSuiteUpload.authentication": "NLAuth nlauth_account=<ACCOUNTID>, nlauth_email=<LOGIN>, nlauth_signature=<PASSWORD>, nlauth_role=<ROLE>",
 
 	// Restlet URL
 	"netSuiteUpload.restlet": "<RESTlet URL>",
 
 	// Temporary folder (e.g. C:\\temp) - used for storing compared file
 	"netSuiteUpload.tempFolder": "<TEMP FOLDER PATH>"
+
+	// Oauth Integration Key
+	"netSuiteUpload.netsuite-key": "<INTEGRATION KEY>",
+
+	// Oauth Integration Secret
+	"netSuiteUpload.netsuite-secret": "<INTEGRATION SECRET>",
+
+	// Oauth Consumer Key
+	"netSuiteUpload.consumer-token": "<CONSUMER KEY>",
+
+	// Oauth Consumer Secret
+	"netSuiteUpload.consumer-secret": "<CONSUMER SECRET>",
+
+	// Account number
+	"netSuiteUpload.realm": "<ACCOUNT NUMBER>"
 }
 ```
 
