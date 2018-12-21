@@ -2,12 +2,12 @@ let vscode = require('vscode');
 let netSuiteBl = require('./bl/netSuiteBl');
 
 function activate(context) {
-    console.log('Extension "netsuite-upload" is now active!');
+    console.log('Extension "netsuite-file-transfer" is now active!');
 
     let noProjectOpenedErrorMessage = 'No project is opened. Please open root folder. (SuiteScripts)';
     let noFileSelectedErrorMessage = 'No file selected. Please right-click the file and select action from context menu.';
 
-    let downloadFileDisposable = vscode.commands.registerCommand('netsuite-upload.downloadFile', (file) => {
+    let downloadFileDisposable = vscode.commands.registerCommand('netsuite-file-transfer.downloadFile', (file) => {
         if (!file) {
             vscode.window.showErrorMessage(noFileSelectedErrorMessage);
             return;
@@ -23,7 +23,7 @@ function activate(context) {
     });
     context.subscriptions.push(downloadFileDisposable);
 
-    let previewFileDisposable = vscode.commands.registerCommand('netsuite-upload.previewFile', (file) => {
+    let previewFileDisposable = vscode.commands.registerCommand('netsuite-file-transfer.previewFile', (file) => {
         if (!file) {
             vscode.window.showErrorMessage(noFileSelectedErrorMessage);
             return;
@@ -39,7 +39,7 @@ function activate(context) {
     });
     context.subscriptions.push(previewFileDisposable);
 
-    let uploadFileDisposable = vscode.commands.registerCommand('netsuite-upload.uploadFile', (file) => {
+    let uploadFileDisposable = vscode.commands.registerCommand('netsuite-file-transfer.uploadFile', (file) => {
         if (!file) {
             vscode.window.showErrorMessage(noFileSelectedErrorMessage);
             return;
@@ -55,7 +55,7 @@ function activate(context) {
     });    
     context.subscriptions.push(uploadFileDisposable);
 
-    let deleteFileDisposable = vscode.commands.registerCommand('netsuite-upload.deleteFile', (file) => {
+    let deleteFileDisposable = vscode.commands.registerCommand('netsuite-file-transfer.deleteFile', (file) => {
         if (!file) {
             vscode.window.showErrorMessage(noFileSelectedErrorMessage);
             return;
@@ -71,7 +71,7 @@ function activate(context) {
     });    
     context.subscriptions.push(deleteFileDisposable);
 
-    let downloadFolderDisposable = vscode.commands.registerCommand('netsuite-upload.downloadFolder', (directory) => {
+    let downloadFolderDisposable = vscode.commands.registerCommand('netsuite-file-transfer.downloadFolder', (directory) => {
         if (!directory) {
             vscode.window.showErrorMessage('No directory selected.');
             return;
@@ -87,7 +87,7 @@ function activate(context) {
     });
     context.subscriptions.push(downloadFolderDisposable);
 
-    let addCustomDependencyDisposable = vscode.commands.registerCommand('netsuite-upload.addCustomDependency', () => {
+    let addCustomDependencyDisposable = vscode.commands.registerCommand('netsuite-file-transfer.addCustomDependency', () => {
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showErrorMessage('No file is opened.');
@@ -98,7 +98,7 @@ function activate(context) {
     });
     context.subscriptions.push(addCustomDependencyDisposable);
 
-    let addNSDependencyDisposable = vscode.commands.registerCommand('netsuite-upload.addNSDependency', () => {
+    let addNSDependencyDisposable = vscode.commands.registerCommand('netsuite-file-transfer.addNSDependency', () => {
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showErrorMessage('No file is opened.');

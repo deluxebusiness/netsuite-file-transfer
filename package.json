@@ -1,6 +1,6 @@
 {
-	"name": "netsuite-upload",
-	"displayName": "NetSuite Upload",
+	"name": "netsuite-file-transfer",
+	"displayName": "NetSuite File Transfer",
 	"description": "NetSuite Extension used for managing of files to and from the document cabinet (including SuiteScript files)",
 	"version": "0.2.0",
 	"publisher": "deluxebusiness",
@@ -10,10 +10,10 @@
 	"categories": [
 	  "Other"
 	],
-	"homepage": "https://github.com/deluxebusiness/netsuite-upload",
+	"homepage": "https://github.com/deluxebusiness/netsuite-file-transfer",
 	"repository": {
 	  "type": "git",
-	  "url": "https://github.com/deluxebusiness/netsuite-upload"
+	  "url": "https://github.com/deluxebusiness/netsuite-file-transfer"
 	},
 	"icon": "img/icon.png",
 	"keywords": [
@@ -23,13 +23,13 @@
 	  "netsuite-suitescript"
 	],
 	"activationEvents": [
-	  "onCommand:netsuite-upload.downloadFile",
-	  "onCommand:netsuite-upload.uploadFile",
-	  "onCommand:netsuite-upload.deleteFile",
-	  "onCommand:netsuite-upload.previewFile",
-	  "onCommand:netsuite-upload.downloadFolder",
-	  "onCommand:netsuite-upload.addCustomDependency",
-	  "onCommand:netsuite-upload.addNSDependency"
+	  "onCommand:netsuite-file-transfer.downloadFile",
+	  "onCommand:netsuite-file-transfer.uploadFile",
+	  "onCommand:netsuite-file-transfer.deleteFile",
+	  "onCommand:netsuite-file-transfer.previewFile",
+	  "onCommand:netsuite-file-transfer.downloadFolder",
+	  "onCommand:netsuite-file-transfer.addCustomDependency",
+	  "onCommand:netsuite-file-transfer.addNSDependency"
 	],
 	"main": "./extension",
 	"contributes": {
@@ -73,37 +73,37 @@
 	  },
 	  "commands": [
 		{
-		  "command": "netsuite-upload.downloadFile",
+		  "command": "netsuite-file-transfer.downloadFile",
 		  "title": "Pull file from NetSuite",
 		  "category": "NSUpload"
 		},
 		{
-		  "command": "netsuite-upload.previewFile",
+		  "command": "netsuite-file-transfer.previewFile",
 		  "title": "Compare file with NetSuite",
 		  "category": "NSUpload"
 		},
 		{
-		  "command": "netsuite-upload.uploadFile",
+		  "command": "netsuite-file-transfer.uploadFile",
 		  "title": "Push file to NetSuite",
 		  "category": "NSUpload"
 		},
 		{
-		  "command": "netsuite-upload.deleteFile",
+		  "command": "netsuite-file-transfer.deleteFile",
 		  "title": "Delete file in NetSuite",
 		  "category": "NSUpload"
 		},
 		{
-		  "command": "netsuite-upload.downloadFolder",
+		  "command": "netsuite-file-transfer.downloadFolder",
 		  "title": "Pull folder from NetSuite",
 		  "category": "NSUpload"
 		},
 		{
-		  "command": "netsuite-upload.addCustomDependency",
+		  "command": "netsuite-file-transfer.addCustomDependency",
 		  "title": "Add Custom Dependency",
 		  "category": "NSUpload"
 		},
 		{
-		  "command": "netsuite-upload.addNSDependency",
+		  "command": "netsuite-file-transfer.addNSDependency",
 		  "title": "Add NetSuite Dependency",
 		  "category": "NSUplod"
 		}
@@ -112,34 +112,34 @@
 		"explorer/context": [
 		  {
 			"when": "resourceLangId",
-			"command": "netsuite-upload.downloadFile",
+			"command": "netsuite-file-transfer.downloadFile",
 			"group": "netsuite"
 		  },
 		  {
 			"when": "resourceLangId",
-			"command": "netsuite-upload.previewFile",
+			"command": "netsuite-file-transfer.previewFile",
 			"group": "netsuite"
 		  },
 		  {
 			"when": "resourceLangId",
-			"command": "netsuite-upload.uploadFile",
+			"command": "netsuite-file-transfer.uploadFile",
 			"group": "netsuite"
 		  },
 		  {
 			"when": "resourceLangId",
-			"command": "netsuite-upload.deleteFile",
+			"command": "netsuite-file-transfer.deleteFile",
 			"group": "netsuite"
 		  },
 		  {
 			"when": "!resourceLangId",
-			"command": "netsuite-upload.downloadFolder",
+			"command": "netsuite-file-transfer.downloadFolder",
 			"group": "netsuite"
 		  }
 		]
 	  },
 	  "keybindings": [
 		{
-		  "command": "netsuite-upload.downLoadFile",
+		  "command": "netsuite-file-transfer.downLoadFile",
 		  "key": "ctrl+n ctrl+d"
 		}
 	  ],
