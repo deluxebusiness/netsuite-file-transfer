@@ -1,24 +1,26 @@
 {
 	"name": "netsuite-upload",
 	"displayName": "NetSuite Upload",
-	"description": "NetSuite Upload Extension used for managing of SuiteScript files",
-	"version": "0.1.3",
-	"publisher": "tomastvrdy",
+	"description": "NetSuite Extension used for managing of files to and from the document cabinet (including SuiteScript files)",
+	"version": "0.2.0",
+	"publisher": "deluxebusiness",
 	"engines": {
 	  "vscode": "^1.5.0"
 	},
 	"categories": [
 	  "Other"
 	],
-	"homepage": "https://github.com/tvrdytom/netsuite-upload",
+	"homepage": "https://github.com/deluxebusiness/netsuite-upload",
 	"repository": {
 	  "type": "git",
-	  "url": "https://github.com/tvrdytom/netsuite-upload"
+	  "url": "https://github.com/deluxebusiness/netsuite-upload"
 	},
 	"icon": "img/icon.png",
 	"keywords": [
 	  "netsuite",
-	  "netsuite-upload"
+	  "netsuite-upload",
+	  "netsuite-file-transfer",
+	  "netsuite-suitescript"
 	],
 	"activationEvents": [
 	  "onCommand:netsuite-upload.downloadFile",
@@ -65,7 +67,7 @@
 		  },
 		  "netSuiteUpload.realm": {
 			"type": "string",
-			"description": "NetSuite account number"
+			"description": "NetSuite Account Number"
 		  }
 		}
 	  },
