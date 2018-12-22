@@ -2,7 +2,7 @@
 	"name": "netsuite-file-transfer",
 	"displayName": "NetSuite File Transfer",
 	"description": "NetSuite Extension used for managing of files to and from the document cabinet (including SuiteScript files)",
-	"version": "0.2.0",
+	"version": "2.0.0",
 	"publisher": "deluxebusiness",
 	"engines": {
 		"vscode": "^1.5.0"
