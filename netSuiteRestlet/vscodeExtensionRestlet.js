@@ -3,244 +3,288 @@
  * @NScriptType Restlet
  */
 define(['N/file', 'N/search', 'N/record'], function (file, search, record) {
-    
-    function getFolderId(folderPath) {
-        var foldersArray = folderPath.split('/');
-        var folderName = foldersArray[foldersArray.length-1];
-        var filters = [];
-        
-        filters.push({ name: 'name', operator: 'is', values: [folderName] });
-        if (foldersArray.length == 1) filters.push({ name: 'istoplevel', operator: 'is', values: true });
 
-        if (foldersArray.length > 1) {
-            var parentFolderArray = foldersArray.slice(0, -1);
-            var parentId = getFolderId(parentFolderArray.join('/'));
-            filters.push({ name: 'parent', operator: 'anyof', values: [parentId] }); 
-        }
-        
-        var folderSearch = search.create({
-            type: search.Type.FOLDER,
-            filters: filters
-        });
+	function getFolderId(folderPath) {
+		var foldersArray = folderPath.split('/');
+		var folderName = foldersArray[foldersArray.length - 1];
+		var filters = [];
 
-        var folderId = null;
-        folderSearch.run().each(function(result) {
-            folderId = result.id;
-            return false;
-        });
+		filters.push({
+			name: 'name',
+			operator: 'is',
+			values: [folderName]
+		});
+		if (foldersArray.length == 1) filters.push({
+			name: 'istoplevel',
+			operator: 'is',
+			values: true
+		});
 
-        return folderId;   
-    }
+		if (foldersArray.length > 1) {
+			var parentFolderArray = foldersArray.slice(0, -1);
+			var parentId = getFolderId(parentFolderArray.join('/'));
+			filters.push({
+				name: 'parent',
+				operator: 'anyof',
+				values: [parentId]
+			});
+		}
 
-    function createFolderIfNotExist(folderPath, parentId) {
-        var folderArray = folderPath.split('/');
-        var firstFolder = folderArray[0];
-        var nextFolders = folderArray.slice(1);
-        var filters = [];
+		var folderSearch = search.create({
+			type: search.Type.FOLDER,
+			filters: filters
+		});
 
-        filters.push({ name: 'name', operator: 'is', values: [firstFolder] });
-        if (parentId) {
-            filters.push({ name: 'parent', operator: 'anyof', values: [parentId] });
-        } else {
-            filters.push({ name: 'istoplevel', operator: 'is', values: true });
-        }
+		var folderId = null;
+		folderSearch.run().each(function (result) {
+			folderId = result.id;
+			return false;
+		});
 
-        var folderSearch = search.create({
-            type: search.Type.FOLDER,
-            filters: filters
-        });
+		return folderId;
+	}
 
-        var folderId = null;
-        folderSearch.run().each(function(result) {
-            folderId = result.id;
-            return false;
-        });
+	function createFolderIfNotExist(folderPath, parentId) {
+		var folderArray = folderPath.split('/');
+		var firstFolder = folderArray[0];
+		var nextFolders = folderArray.slice(1);
+		var filters = [];
 
-        if (!folderId) {
-            var folderRecord = record.create({ type: record.Type.FOLDER });
-            folderRecord.setValue({ fieldId: 'name', value: firstFolder });
-            folderRecord.setValue({ fieldId: 'parent', value: parentId });
-            folderId = folderRecord.save();
-        }
+		filters.push({
+			name: 'name',
+			operator: 'is',
+			values: [firstFolder]
+		});
+		if (parentId) {
+			filters.push({
+				name: 'parent',
+				operator: 'anyof',
+				values: [parentId]
+			});
+		} else {
+			filters.push({
+				name: 'istoplevel',
+				operator: 'is',
+				values: true
+			});
+		}
 
-        if (!nextFolders || nextFolders.length == 0) return folderId;
+		var folderSearch = search.create({
+			type: search.Type.FOLDER,
+			filters: filters
+		});
 
-        return createFolderIfNotExist(nextFolders.join('/'), folderId);
-    }
+		var folderId = null;
+		folderSearch.run().each(function (result) {
+			folderId = result.id;
+			return false;
+		});
 
-    function getInnerFolders(folderPath, folderId) {
-        var folderSearch = search.create({
-            type: search.Type.FOLDER,
-            columns: ['name'],
-            filters: [{
-                name: 'parent',
-                operator: 'is',
-                values: [folderId]
-            }]
-        });
+		if (!folderId) {
+			var folderRecord = record.create({
+				type: record.Type.FOLDER
+			});
+			folderRecord.setValue({
+				fieldId: 'name',
+				value: firstFolder
+			});
+			folderRecord.setValue({
+				fieldId: 'parent',
+				value: parentId
+			});
+			folderId = folderRecord.save();
+		}
 
-        var innerFolders = [{
-            id: folderId,
-            path: folderPath
-        }];
-        folderSearch.run().each(function(result) {
-            innerFolders = innerFolders.concat(getInnerFolders(folderPath + '/' + result.getValue('name'), result.id));
-            return true;
-        });
-        return innerFolders;
-    }
+		if (!nextFolders || nextFolders.length == 0) return folderId;
 
-    function getFilesInFolder(folderPath, folderId) {
-        var fileSearch = search.create({
-            type: search.Type.FOLDER,
-            columns: ['file.internalid', 'file.name'],
-            filters: [{
-                name: 'internalid',
-                operator: 'is',
-                values: [folderId]
-            }]
-        });
-        
-        var files = [];
-        fileSearch.run().each(function(result) {
-            var fileId = result.getValue({ name: 'internalid', join: 'file' });
-            if (fileId) {
-                var fileName = result.getValue({ name: 'name', join: 'file' });
-                var fileContent = file.load({ id: fileId }).getContents();
+		return createFolderIfNotExist(nextFolders.join('/'), folderId);
+	}
 
-                files.push({
-                    type: 'file',
-                    name: fileName,
-                    fullPath: folderPath + '/' + fileName,
-                    content: fileContent
-                });    
-            }
-            return true;
-        });
+	function getInnerFolders(folderPath, folderId) {
+		var folderSearch = search.create({
+			type: search.Type.FOLDER,
+			columns: ['name'],
+			filters: [{
+				name: 'parent',
+				operator: 'is',
+				values: [folderId]
+			}]
+		});
 
-        // In case of empty folder return the folder name
-        if (files.length == 0) {
-            files.push({
-                type: 'folder',
-                fullPath: folderPath
-            });
-        }
+		var innerFolders = [{
+			id: folderId,
+			path: folderPath
+		}];
+		folderSearch.run().each(function (result) {
+			innerFolders = innerFolders.concat(getInnerFolders(folderPath + '/' + result.getValue('name'), result.id));
+			return true;
+		});
+		return innerFolders;
+	}
 
-        return files;
-    }
+	function getFilesInFolder(folderPath, folderId) {
+		var fileSearch = search.create({
+			type: search.Type.FOLDER,
+			columns: ['file.internalid', 'file.name'],
+			filters: [{
+				name: 'internalid',
+				operator: 'is',
+				values: [folderId]
+			}]
+		});
 
-    function getFile(relFilePath) {
-        var fullFilePath = 'SuiteScripts' + relFilePath;
-        
-        var fileToReturn = file.load({
-            id: fullFilePath
-        });
-        
-        return [{
-            name: fileToReturn.name,
-            fullPath: fullFilePath,
-            content: fileToReturn.getContents()
-        }];
-    }
+		var files = [];
+		fileSearch.run().each(function (result) {
+			var fileId = result.getValue({
+				name: 'internalid',
+				join: 'file'
+			});
+			if (fileId) {
+				var fileName = result.getValue({
+					name: 'name',
+					join: 'file'
+				});
+				var fileContent = file.load({
+					id: fileId
+				}).getContents();
 
-    function getDirectory(relDirectoryPath) {
-        var folderId = getFolderId('SuiteScripts' + relDirectoryPath);
-        var folders = getInnerFolders(relDirectoryPath, folderId)
-        var allFiles = [];
-        
-        folders.forEach(function(folder) {
-            allFiles = allFiles.concat(getFilesInFolder(folder.path, folder.id));
-        });
-        return allFiles;
-    }
+				files.push({
+					type: 'file',
+					name: fileName,
+					fullPath: folderPath + '/' + fileName,
+					content: fileContent
+				});
+			}
+			return true;
+		});
 
-    function updateFile(existingFile, content) {
-        var fileObj = file.create({
-            name: existingFile.name,
-            fileType: existingFile.fileType,
-            contents: content,
-            description: existingFile.description,
-            encoding: existingFile.encoding,
-            folder: existingFile.folder,
-            isOnline: existingFile.isOnline
-        });
-        fileObj.save();
-    }
+		// In case of empty folder return the folder name
+		if (files.length == 0) {
+			files.push({
+				type: 'folder',
+				fullPath: folderPath
+			});
+		}
 
-    function createFile(filePath, content) {
-        var pathArray = filePath.split('/');
-        var name = pathArray[pathArray.length-1];
-        var type = getFileType(name);
-        var folder = createFolderIfNotExist(filePath.substring(0, filePath.lastIndexOf('/')));
+		return files;
+	}
 
-        var fileObj = file.create({
-            name: name,
-            fileType: type,
-            contents: content,
-            folder: folder
-        });
-        fileObj.save();
-    }
+	function getFile(relFilePath) {
+		var fullFilePath = 'SuiteScripts' + relFilePath;
 
-    function getFileType(fileName) {
+		var fileToReturn = file.load({
+			id: fullFilePath
+		});
 
-        // TODO: differentiate according to the file extension
-        return file.Type.JAVASCRIPT;
+		return [{
+			name: fileToReturn.name,
+			fullPath: fullFilePath,
+			content: fileToReturn.getContents()
+		}];
+	}
 
-    }
+	function getDirectory(relDirectoryPath) {
+		var folderId = getFolderId('SuiteScripts' + relDirectoryPath);
+		var folders = getInnerFolders(relDirectoryPath, folderId)
+		var allFiles = [];
 
-    function postFile(relFilePath, content) {
-        var fullFilePath = 'SuiteScripts' + relFilePath;
+		folders.forEach(function (folder) {
+			allFiles = allFiles.concat(getFilesInFolder(folder.path, folder.id));
+		});
+		return allFiles;
+	}
 
-        try {
-            var loadedFile = file.load({
-                id: fullFilePath
-            });
-            updateFile(loadedFile, content);
-        } catch(e) {
-            if (e.name == 'RCRD_DSNT_EXIST') {
-                createFile(fullFilePath, content);
-            } else {
-                throw e;
-            }
-        }
-    }
+	function updateFile(existingFile, content) {
+		var fileObj = file.create({
+			name: existingFile.name,
+			fileType: existingFile.fileType,
+			contents: content,
+			description: existingFile.description,
+			encoding: existingFile.encoding,
+			folder: existingFile.folder,
+			isOnline: existingFile.isOnline
+		});
+		fileObj.save();
+	}
 
-    function deleteFile(relFilePath) {
-        var fullFilePath = 'SuiteScripts' + relFilePath;
+	function createFile(filePath, content) {
+		var pathArray = filePath.split('/');
+		var name = pathArray[pathArray.length - 1];
+		var type = getFileType(name);
+		var folder = createFolderIfNotExist(filePath.substring(0, filePath.lastIndexOf('/')));
 
-        var fileObject = file.load({ id: fullFilePath });
-        file.delete({ id: fileObject.id });
-    }
+		var fileObj = file.create({
+			name: name,
+			fileType: type,
+			contents: content,
+			folder: folder
+		});
+		fileObj.save();
+	}
 
-    function getFunc(request) {
-        var type = request.type; // directory, file
-        var relPath = request.name.split('\\').join('/');
-        // TODO: fix request.name == EMPTY STRING
+	function getFileType(fileName) {
 
-        if (type === 'file') {
-            return getFile(relPath);
-        }
-        if (type === 'directory') {
-            return getDirectory(relPath);
-        }
-    }
+		// TODO: differentiate according to the file extension
+		return file.Type.JAVASCRIPT;
 
-    function postFunc(request) {
-        var relPath = request.name.split('\\').join('/');
-        
-        postFile(relPath, request.content);
-    }
+	}
 
-    function deleteFunc(request) {
-        var relPath = request.name.split('\\').join('/');
-        
-        deleteFile(relPath);
-    }
+	function postFile(relFilePath, content) {
+		var fullFilePath = 'SuiteScripts' + relFilePath;
 
-    return {
-        get: getFunc,
-        post: postFunc,
-        delete: deleteFunc
-    }
+		try {
+			var loadedFile = file.load({
+				id: fullFilePath
+			});
+			updateFile(loadedFile, content);
+		} catch (e) {
+			if (e.name == 'RCRD_DSNT_EXIST') {
+				createFile(fullFilePath, content);
+			} else {
+				throw e;
+			}
+		}
+	}
+
+	function deleteFile(relFilePath) {
+		var fullFilePath = 'SuiteScripts' + relFilePath;
+
+		var fileObject = file.load({
+			id: fullFilePath
+		});
+		file.delete({
+			id: fileObject.id
+		});
+	}
+
+	function getFunc(request) {
+		var type = request.type; // directory, file
+		var relPath = request.name.split('\\').join('/');
+		// TODO: fix request.name == EMPTY STRING
+
+		if (type === 'file') {
+			return getFile(relPath);
+		}
+		if (type === 'directory') {
+			return getDirectory(relPath);
+		}
+	}
+
+	function postFunc(request) {
+		var relPath = request.name.split('\\').join('/');
+
+		postFile(relPath, request.content);
+	}
+
+	function deleteFunc(request) {
+		var relPath = request.name.split('\\').join('/');
+
+		deleteFile(relPath);
+	}
+
+	return {
+		get: getFunc,
+		post: postFunc,
+		delete: deleteFunc
+	}
 });
