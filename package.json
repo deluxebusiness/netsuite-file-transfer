@@ -5,168 +5,162 @@
 	"version": "0.2.0",
 	"publisher": "deluxebusiness",
 	"engines": {
-	  "vscode": "^1.5.0"
+		"vscode": "^1.5.0"
 	},
 	"categories": [
-	  "Other"
+		"Other"
 	],
 	"homepage": "https://github.com/deluxebusiness/netsuite-file-transfer",
 	"repository": {
-	  "type": "git",
-	  "url": "https://github.com/deluxebusiness/netsuite-file-transfer"
+		"type": "git",
+		"url": "https://github.com/deluxebusiness/netsuite-file-transfer"
 	},
 	"icon": "img/icon.png",
 	"keywords": [
-	  "netsuite",
-	  "netsuite-upload",
-	  "netsuite-file-transfer",
-	  "netsuite-suitescript"
+		"netsuite",
+		"netsuite-upload",
+		"netsuite-file-transfer",
+		"netsuite-suitescript"
 	],
 	"activationEvents": [
-	  "onCommand:netsuite-file-transfer.downloadFile",
-	  "onCommand:netsuite-file-transfer.uploadFile",
-	  "onCommand:netsuite-file-transfer.deleteFile",
-	  "onCommand:netsuite-file-transfer.previewFile",
-	  "onCommand:netsuite-file-transfer.downloadFolder",
-	  "onCommand:netsuite-file-transfer.addCustomDependency",
-	  "onCommand:netsuite-file-transfer.addNSDependency"
+		"onCommand:netsuite-file-transfer.downloadFile",
+		"onCommand:netsuite-file-transfer.uploadFile",
+		"onCommand:netsuite-file-transfer.deleteFile",
+		"onCommand:netsuite-file-transfer.previewFile",
+		"onCommand:netsuite-file-transfer.downloadFolder",
+		"onCommand:netsuite-file-transfer.addCustomDependency",
+		"onCommand:netsuite-file-transfer.addNSDependency"
 	],
 	"main": "./extension",
 	"contributes": {
-	  "configuration": {
-		"type": "object",
-		"title": "NetSuite Connection Configuration",
-		"properties": {
-		  "netSuiteUpload.authentication": {
-			"type": "string",
-			"description": "Authentication header"
-		  },
-		  "netSuiteUpload.restlet": {
-			"type": "string",
-			"description": "Restlet URL"
-		  },
-		  "netSuiteUpload.tempFolder": {
-			"type": "string",
-			"description": "Temporary folder (e.g. C:\\temp)"
-		  },
-		  "netSuiteUpload.netsuite-key": {
-			"type": "string",
-			"description": "NetSuite Integration Key"
-		  },
-		  "netSuiteUpload.netsuite-secret": {
-			"type": "string",
-			"description": "NetSuite Integration Secret"
-		  },
-		  "netSuiteUpload.consumer-token": {
-			"type": "string",
-			"description": "NetSuite Consumer Token"
-		  },
-		  "netSuiteUpload.consumer-secret": {
-			"type": "string",
-			"description": "NetSuite Consumer Secret"
-		  },
-		  "netSuiteUpload.realm": {
-			"type": "string",
-			"description": "NetSuite Account Number"
-		  }
-		}
-	  },
-	  "commands": [
-		{
-		  "command": "netsuite-file-transfer.downloadFile",
-		  "title": "Pull file from NetSuite",
-		  "category": "NSUpload"
+		"configuration": {
+			"type": "object",
+			"title": "NetSuite Connection Configuration",
+			"properties": {
+				"netsuiteFileTransfer.restlet": {
+					"type": "string",
+					"description": "Restlet URL [REQUIRED]"
+				},
+				"netsuiteFileTransfer.authentication": {
+					"type": "string",
+					"description": "Authentication header. If there is anything entered for this value, Oauth will be ignored. Therfore, do not edit this setting if you want to use Oauth."
+				},
+				"netsuiteFileTransfer.tempFolder": {
+					"type": "string",
+					"description": "Temporary folder. Used for storing the file to compare. If setting is not used, default will be C:\\temp"
+				},
+				"netsuiteFileTransfer.netsuite-key": {
+					"type": "string",
+					"description": "NetSuite Integration Key"
+				},
+				"netsuiteFileTransfer.netsuite-secret": {
+					"type": "string",
+					"description": "NetSuite Integration Secret"
+				},
+				"netsuiteFileTransfer.consumer-token": {
+					"type": "string",
+					"description": "NetSuite Consumer Token"
+				},
+				"netsuiteFileTransfer.consumer-secret": {
+					"type": "string",
+					"description": "NetSuite Consumer Secret"
+				},
+				"netsuiteFileTransfer.realm": {
+					"type": "string",
+					"description": "NetSuite Account Number"
+				}
+			}
 		},
-		{
-		  "command": "netsuite-file-transfer.previewFile",
-		  "title": "Compare file with NetSuite",
-		  "category": "NSUpload"
+		"commands": [{
+				"command": "netsuite-file-transfer.downloadFile",
+				"title": "Pull file from NetSuite",
+				"category": "NSUpload"
+			},
+			{
+				"command": "netsuite-file-transfer.previewFile",
+				"title": "Compare file with NetSuite",
+				"category": "NSUpload"
+			},
+			{
+				"command": "netsuite-file-transfer.uploadFile",
+				"title": "Push file to NetSuite",
+				"category": "NSUpload"
+			},
+			{
+				"command": "netsuite-file-transfer.deleteFile",
+				"title": "Delete file in NetSuite",
+				"category": "NSUpload"
+			},
+			{
+				"command": "netsuite-file-transfer.downloadFolder",
+				"title": "Pull folder from NetSuite",
+				"category": "NSUpload"
+			},
+			{
+				"command": "netsuite-file-transfer.addCustomDependency",
+				"title": "Add Custom Dependency",
+				"category": "NSUpload"
+			},
+			{
+				"command": "netsuite-file-transfer.addNSDependency",
+				"title": "Add NetSuite Dependency",
+				"category": "NSUplod"
+			}
+		],
+		"menus": {
+			"explorer/context": [{
+					"when": "resourceLangId",
+					"command": "netsuite-file-transfer.downloadFile",
+					"group": "netsuite"
+				},
+				{
+					"when": "resourceLangId",
+					"command": "netsuite-file-transfer.previewFile",
+					"group": "netsuite"
+				},
+				{
+					"when": "resourceLangId",
+					"command": "netsuite-file-transfer.uploadFile",
+					"group": "netsuite"
+				},
+				{
+					"when": "resourceLangId",
+					"command": "netsuite-file-transfer.deleteFile",
+					"group": "netsuite"
+				},
+				{
+					"when": "!resourceLangId",
+					"command": "netsuite-file-transfer.downloadFolder",
+					"group": "netsuite"
+				}
+			]
 		},
-		{
-		  "command": "netsuite-file-transfer.uploadFile",
-		  "title": "Push file to NetSuite",
-		  "category": "NSUpload"
-		},
-		{
-		  "command": "netsuite-file-transfer.deleteFile",
-		  "title": "Delete file in NetSuite",
-		  "category": "NSUpload"
-		},
-		{
-		  "command": "netsuite-file-transfer.downloadFolder",
-		  "title": "Pull folder from NetSuite",
-		  "category": "NSUpload"
-		},
-		{
-		  "command": "netsuite-file-transfer.addCustomDependency",
-		  "title": "Add Custom Dependency",
-		  "category": "NSUpload"
-		},
-		{
-		  "command": "netsuite-file-transfer.addNSDependency",
-		  "title": "Add NetSuite Dependency",
-		  "category": "NSUplod"
-		}
-	  ],
-	  "menus": {
-		"explorer/context": [
-		  {
-			"when": "resourceLangId",
-			"command": "netsuite-file-transfer.downloadFile",
-			"group": "netsuite"
-		  },
-		  {
-			"when": "resourceLangId",
-			"command": "netsuite-file-transfer.previewFile",
-			"group": "netsuite"
-		  },
-		  {
-			"when": "resourceLangId",
-			"command": "netsuite-file-transfer.uploadFile",
-			"group": "netsuite"
-		  },
-		  {
-			"when": "resourceLangId",
-			"command": "netsuite-file-transfer.deleteFile",
-			"group": "netsuite"
-		  },
-		  {
-			"when": "!resourceLangId",
-			"command": "netsuite-file-transfer.downloadFolder",
-			"group": "netsuite"
-		  }
-		]
-	  },
-	  "keybindings": [
-		{
-		  "command": "netsuite-file-transfer.downLoadFile",
-		  "key": "ctrl+n ctrl+d"
-		}
-	  ],
-	  "snippets": [
-		{
-		  "language": "javascript",
-		  "path": "./snippets/snippets.json"
-		}
-	  ]
+		"keybindings": [{
+			"command": "netsuite-file-transfer.downLoadFile",
+			"key": "ctrl+n ctrl+d"
+		}],
+		"snippets": [{
+			"language": "javascript",
+			"path": "./snippets/snippets.json"
+		}]
 	},
 	"scripts": {
-	  "postinstall": "node ./node_modules/vscode/bin/install"
+		"postinstall": "node ./node_modules/vscode/bin/install"
 	},
 	"devDependencies": {
-	  "typescript": "^2.0.3",
-	  "vscode": "^1.0.0",
-	  "mocha": "^2.3.3",
-	  "eslint": "^3.6.0",
-	  "@types/node": "^6.0.40",
-	  "@types/mocha": "^2.2.32"
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.0",
+		"mocha": "^2.3.3",
+		"eslint": "^3.6.0",
+		"@types/node": "^6.0.40",
+		"@types/mocha": "^2.2.32"
 	},
 	"dependencies": {
-	  "crypto": "0.0.3",
-	  "esprima": "3.1.3",
-	  "estraverse": "4.2.0",
-	  "node-rest-client": "2.0.1",
-	  "oauth-1.0a": "^2.2.1",
-	  "underscore": "1.8.3"
+		"crypto": "0.0.3",
+		"esprima": "3.1.3",
+		"estraverse": "4.2.0",
+		"node-rest-client": "2.0.1",
+		"oauth-1.0a": "^2.2.1",
+		"underscore": "1.8.3"
 	}
-  }
+}

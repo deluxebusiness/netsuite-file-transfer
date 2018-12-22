@@ -2,11 +2,13 @@
 
 [![Version](https://vsmarketplacebadge.apphb.com/version/tomastvrdy.netsuite-upload.svg)](https://marketplace.visualstudio.com/items?itemName=tomastvrdy.netsuite-upload)
 
-**netsuite-upload** is a Visual Studio Code extension that allows you to manage your SuiteScript files directly from the IDE & helps you with defining of new momdules & module dependecies.
+**netsuite-file-transfer** is a Visual Studio Code extension that allows you to manage your NetSuite File Cabinate (including SuiteScript files) directly from the IDE. It also helps you with defining of new modules & module dependecies.
 
-v2.0 This VS code plugin has been updated to add functionality for any NetSuite folder (i.e. not just the SuiteScript folder) as well as authentication key functionality. The latter is important due to NetSuite's encouragement of two-factor authentication (2FA) and the traditional connection method will not work if 2FA is forced for all accounts.
+This extension is based on the original created by tomastvrdy. This version has been updated to add functionality so any NetSuite folder can be used (i.e. not just the SuiteScript folder) as well as being able to use authentication key functionality. The latter is important due to NetSuite's encouragement of two-factor authentication (2FA) and the traditional connection (username and password) method will not work if 2FA is forced for all accounts.
 
-Authentication code by jorgeiriarte https://github.com/jorgeiriarte
+Original code by tomastvrdy.
+Authentication code by jorgeiriarte (https://github.com/jorgeiriarte).
+Folder functionality by .
 
 ## Features
 ### 1. NetSuite File Cabinet Management
@@ -48,29 +50,33 @@ Right-click the file/folder in the navigation panel to see the options:
 **settings.json**
 ```javascript
 {
+	// Restlet URL [REQUIRED]
+	"netsuiteFileTransfer.restlet": "<RESTlet URL>",
+
 	// Authentication header
-	"netSuiteUpload.authentication": "NLAuth nlauth_account=<ACCOUNTID>, nlauth_email=<LOGIN>, nlauth_signature=<PASSWORD>, nlauth_role=<ROLE>",
+	// If there is anything entered for this value, Oauth will be ignored
+	// Therfore, do not edit this setting if you want to use Oauth
+	"netsuiteFileTransfer.authentication": "NLAuth nlauth_account=<ACCOUNTID>, nlauth_email=<LOGIN>, nlauth_signature=<PASSWORD>, nlauth_role=<ROLE>",
 
-	// Restlet URL
-	"netSuiteUpload.restlet": "<RESTlet URL>",
-
-	// Temporary folder (e.g. C:\\temp) - used for storing compared file
-	"netSuiteUpload.tempFolder": "<TEMP FOLDER PATH>"
+	// Temporary folder
+	// Used for storing the file to compare
+	// If setting is not used, default will be C:\\temp
+	"netsuiteFileTransfer.tempFolder": "<TEMP FOLDER PATH>"
 
 	// Oauth Integration Key
-	"netSuiteUpload.netsuite-key": "<INTEGRATION KEY>",
+	"netsuiteFileTransfer.netsuite-key": "<INTEGRATION KEY>",
 
 	// Oauth Integration Secret
-	"netSuiteUpload.netsuite-secret": "<INTEGRATION SECRET>",
+	"netsuiteFileTransfer.netsuite-secret": "<INTEGRATION SECRET>",
 
 	// Oauth Consumer Key
-	"netSuiteUpload.consumer-token": "<CONSUMER KEY>",
+	"netsuiteFileTransfer.consumer-token": "<CONSUMER KEY>",
 
 	// Oauth Consumer Secret
-	"netSuiteUpload.consumer-secret": "<CONSUMER SECRET>",
+	"netsuiteFileTransfer.consumer-secret": "<CONSUMER SECRET>",
 
-	// Account number
-	"netSuiteUpload.realm": "<ACCOUNT NUMBER>"
+	// NetSuite Account Number
+	"netsuiteFileTransfer.realm": "<ACCOUNT NUMBER>"
 }
 ```
 
