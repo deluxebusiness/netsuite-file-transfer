@@ -18,7 +18,7 @@ function activate(context) {
 			vscode.window.showErrorMessage(noProjectOpenedErrorMessage);
 			return;
 		}
-
+		
 		netSuiteBl.downloadFileFromNetSuite(file);
 	});
 	context.subscriptions.push(downloadFileDisposable);

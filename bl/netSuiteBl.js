@@ -52,12 +52,7 @@ function deleteFileInNetSuite(file) {
 function previewFileFromNetSuite(file) {
 	nsRestClient.getFile(file, function (data) {
 		if (hasError(data, 'File does not exist in NetSuite')) return;
-		if (!vscode.workspace.getConfiguration('netsuiteFileTransfer')['tempFolder']) {
-			var tempFolder = "C:\\temp";
-		} else {
-			var tempFolder = vscode.workspace.getConfiguration('netsuiteFileTransfer')['tempFolder'];
-		}
-
+		var tempFolder = vscode.workspace.getConfiguration('netsuiteFileTransfer')['tempFolder'];
 		var relativeFileName = nsRestClient.getRelativePath(file.fsPath);
 		var filePathArray = (relativeFileName.split('.')[0] + '.preview.' + relativeFileName.split('.')[1]).split('\\');
 		var newPreviewFile = tempFolder + '\\' + filePathArray[filePathArray.length - 1];
