@@ -47,6 +47,7 @@
 				},
 				"netsuiteFileTransfer.tempFolder": {
 					"type": "string",
+					"default": "C:\\temp",
 					"description": "Temporary folder. Used for storing the file to compare. If setting is not used, default will be C:\\temp"
 				},
 				"netsuiteFileTransfer.netsuite-key": {
